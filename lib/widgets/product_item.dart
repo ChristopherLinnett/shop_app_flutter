@@ -1,32 +1,33 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app_flutter/providers/product.dart';
 import 'package:shop_app_flutter/screens/product_detail.dart';
 
 class ProductItem extends StatelessWidget {
-  const ProductItem(
-      {super.key,
-      required this.id,
-      required this.title,
-      required this.imageUrl});
-  final String id;
-  final String title;
-  final String imageUrl;
+  const ProductItem({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final product = Provider.of<Product>(context);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
         footer: GridTileBar(
           title: Text(
-            title,
+            product.title,
             style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
           leading: IconButton(
-            icon: const Icon(Icons.favorite),
+            icon: Icon(
+                product.isFavourite ? Icons.favorite : Icons.favorite_outline),
             color: Theme.of(context).colorScheme.secondary,
-            onPressed: () {},
+            onPressed: () {
+              product.toggleFavourite();
+            },
           ),
           trailing: IconButton(
             icon: const Icon(Icons.shopping_cart),
@@ -37,11 +38,11 @@ class ProductItem extends StatelessWidget {
         ),
         child: GestureDetector(
           onTap: () {
-            Navigator.of(context)
-                .pushNamed(ProductDetailScreen.routeName, arguments: id);
+            Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
+                arguments: product.id);
           },
           child: CachedNetworkImage(
-            imageUrl: imageUrl,
+            imageUrl: product.imageUrl,
             fit: BoxFit.cover,
             placeholder: (context, url) =>
                 const CircularProgressIndicator.adaptive(),
