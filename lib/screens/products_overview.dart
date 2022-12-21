@@ -15,7 +15,7 @@ class ProductsOverviewScreen extends StatelessWidget {
           title: const Text('MyCoolShop'),
         ),
         body: GridView.builder(
-          padding: const EdgeInsets.all(10),
+          padding: EdgeInsets.all(10),
           itemCount: loadedProducts.length,
           itemBuilder: (ctx, i) => ProductItem(
               id: loadedProducts[i].id,
