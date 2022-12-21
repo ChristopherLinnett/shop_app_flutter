@@ -19,12 +19,12 @@ class MyApp extends StatelessWidget {
                 backgroundColor: Colors.black,
                 accentColor: Colors.redAccent),
             fontFamily: 'Lato',
-            textTheme: TextTheme(bodyMedium: TextStyle(color: Colors.white))),
+            textTheme: const TextTheme(bodyMedium: TextStyle(color: Colors.white))),
         initialRoute: ProductsOverviewScreen.routeName,
         routes: {
           ProductsOverviewScreen.routeName: (context) =>
               ProductsOverviewScreen(),
-          ProductDetailScreen.routeName: (context) => ProductDetailScreen(),
+          ProductDetailScreen.routeName: (context) => const ProductDetailScreen(),
         });
   }
 }
