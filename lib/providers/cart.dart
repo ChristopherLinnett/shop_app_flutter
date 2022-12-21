@@ -19,7 +19,14 @@ class ShoppingCart with ChangeNotifier {
     return {..._contents};
   }
 
-  void addItem(String productId, double price, String title) {
+  int get itemCount {
+    return _contents.length;
+  }
+
+  void addItem(
+      {required String productId,
+      required double price,
+      required String title}) {
     if (_contents.containsKey(productId)) {
       _contents.update(
           productId,
