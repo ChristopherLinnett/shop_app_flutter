@@ -4,19 +4,43 @@ import '../dummyproducts.dart';
 
 import 'package:shop_app_flutter/providers/product.dart';
 
-class ProductsOverviewScreen extends StatelessWidget {
-  static const String routeName = 'ProductsOverviewScreen';
+enum FavouriteOptions { favourites, all }
 
-  ProductsOverviewScreen({super.key});
+class ProductsOverviewScreen extends StatefulWidget {
+  static const String routeName = 'ProductsOverviewScreen';
+  const ProductsOverviewScreen({super.key});
+
+  @override
+  State<ProductsOverviewScreen> createState() => _ProductsOverviewScreenState();
+}
+
+class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   final List<Product> loadedProducts = [...dummyProductList];
+  bool showOnlyFavourites = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('MyCoolShop'),
-      ),
-      body: const ProductGrid(),
+      appBar: AppBar(title: const Text('MyCoolShop'), actions: [
+        PopupMenuButton(
+          position: PopupMenuPosition.under,
+          icon: const Icon(Icons.more_vert),
+          onSelected: (FavouriteOptions selectedValue) {
+            setState(() {
+              showOnlyFavourites =
+                  selectedValue == FavouriteOptions.favourites ? true : false;
+            });
+          },
+          itemBuilder: (context) => [
+            const PopupMenuItem(
+                value: FavouriteOptions.favourites,
+                child: Text('Only Favourites')),
+            const PopupMenuItem(
+                value: FavouriteOptions.all, child: Text('Show All'))
+          ],
+        )
+      ]),
+      body: ProductGrid(favouritesOnly: showOnlyFavourites),
     );
   }
 }
