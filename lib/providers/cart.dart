@@ -20,7 +20,32 @@ class ShoppingCart with ChangeNotifier {
   }
 
   int get itemCount {
-    return _contents.length;
+    var count = 0;
+    _contents.forEach(((key, value) {
+      count += value.quantity;
+    }));
+    return count;
+  }
+
+  String get cartTotal {
+    var total = 0.0;
+    _contents.forEach((key, cartItem) {
+      total += cartItem.price * cartItem.quantity;
+    });
+    return total.toStringAsFixed(2);
+  }
+
+  List<CartItem> get cartList {
+    List<CartItem> items = [];
+    _contents.forEach((key, value) {
+      items.add(value);
+    });
+    return items;
+  }
+
+  void removeItem(String itemId) {
+    _contents.remove(itemId);
+    notifyListeners();
   }
 
   void addItem(

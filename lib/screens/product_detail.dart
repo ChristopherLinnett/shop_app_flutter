@@ -1,6 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app_flutter/providers/cart.dart';
 import 'package:shop_app_flutter/providers/products_provider.dart';
+import 'package:shop_app_flutter/screens/shopping_cart.dart';
+import 'package:shop_app_flutter/widgets/badge.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   static const routeName = '/ProductDetailScreen';
@@ -13,9 +17,64 @@ class ProductDetailScreen extends StatelessWidget {
     final product =
         Provider.of<Products>(context, listen: false).findById(productId);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(product.title),
-      ),
-    );
+        appBar: AppBar(title: Text(product.title), actions: [
+          Consumer<ShoppingCart>(
+            builder: (ctx, cart, ch) =>
+                Badge(value: cart.itemCount.toString(), child: ch!),
+            child: IconButton(
+              icon: const Icon(Icons.shopping_cart),
+              onPressed: () {
+                Navigator.of(context).pushNamed(ShoppingCartScreen.routeName);
+              },
+            ),
+          ),
+        ]),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                height: 300,
+                width: double.infinity,
+                child: CachedNetworkImage(
+                  imageUrl: product.imageUrl,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text('\$${product.price}',
+                  style: Theme.of(context).textTheme.headline3),
+              const SizedBox(height: 20),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  product.description,
+                  textAlign: TextAlign.center,
+                  softWrap: true,
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Text('Add to Cart'),
+                    Icon(
+                      Icons.add_shopping_cart,
+                    ),
+                  ],
+                ),
+                onPressed: () {
+                  Provider.of<ShoppingCart>(context, listen: false).addItem(
+                      productId: product.id,
+                      price: product.price,
+                      title: product.title);
+                },
+              )
+            ],
+          ),
+        ));
   }
 }
