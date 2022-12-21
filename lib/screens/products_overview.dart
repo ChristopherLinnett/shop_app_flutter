@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app_flutter/widgets/product_grid.dart';
 import '../dummyproducts.dart';
 
-import 'package:shop_app_flutter/models/product.dart';
+import 'package:shop_app_flutter/providers/product.dart';
 
 class ProductsOverviewScreen extends StatelessWidget {
   static const String routeName = 'ProductsOverviewScreen';
@@ -16,7 +16,7 @@ class ProductsOverviewScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('MyCoolShop'),
       ),
-      body: ProductGrid(),
+      body: const ProductGrid(),
     );
   }
 }

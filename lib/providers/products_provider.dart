@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app_flutter/dummyproducts.dart';
 
-import 'package:shop_app_flutter/models/product.dart';
+import 'package:shop_app_flutter/providers/product.dart';
 
 class Products with ChangeNotifier {
-  List<Product> _items = [...dummyProductList];
+  final List<Product> _items = [...dummyProductList];
 
   List<Product> get items {
     return [..._items];
   }
 
-  void addProduct(newProduct) {
+  Product findById(String id) {
+    return items.firstWhere((item) => item.id == id);
+  }
+
+  void addProduct(Product newProduct) {
     _items.add(newProduct);
     notifyListeners();
   }
