@@ -5,6 +5,8 @@ import '../dummyproducts.dart';
 import 'package:shop_app_flutter/models/product.dart';
 
 class ProductsOverviewScreen extends StatelessWidget {
+  static const String routeName = 'ProductsOverviewScreen';
+
   ProductsOverviewScreen({super.key});
   final List<Product> loadedProducts = [...dummyProductList];
 

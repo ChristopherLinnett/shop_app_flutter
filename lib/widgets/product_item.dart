@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shop_app_flutter/screens/product_detail.dart';
 
 class ProductItem extends StatelessWidget {
   const ProductItem(
@@ -34,11 +35,17 @@ class ProductItem extends StatelessWidget {
           ),
           backgroundColor: Colors.black87,
         ),
-        child: CachedNetworkImage(
-          imageUrl: imageUrl,
-          fit: BoxFit.cover,
-          placeholder: (context, url) =>
-              const CircularProgressIndicator.adaptive(),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context)
+                .pushNamed(ProductDetailScreen.routeName, arguments: id);
+          },
+          child: CachedNetworkImage(
+            imageUrl: imageUrl,
+            fit: BoxFit.cover,
+            placeholder: (context, url) =>
+                const CircularProgressIndicator.adaptive(),
+          ),
         ),
       ),
     );
