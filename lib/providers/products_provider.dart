@@ -81,6 +81,9 @@ class Products with ChangeNotifier {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Product> loadedProducts = [];
+      if (extractedData['error'] != null) {
+        throw HttpException('Not Authorized');
+      }
       extractedData.forEach((productId, product) {
         var newProduct = Product(
             id: productId,
@@ -94,7 +97,7 @@ class Products with ChangeNotifier {
       _items = [...loadedProducts];
       notifyListeners();
     } catch (error) {
-      print(error.toString());
+      print(error);
     }
   }
 

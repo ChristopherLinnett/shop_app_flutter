@@ -52,7 +52,7 @@ class Orders with ChangeNotifier {
         );
         loadedOrders.add(newOrder);
       });
-      _orders = [...loadedOrders];
+      _orders = [...loadedOrders].reversed.toList();
       notifyListeners();
     } catch (error) {
       if (kDebugMode) {
