@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app_flutter/providers/cart.dart';
+import 'package:shop_app_flutter/providers/orders.dart';
 import 'package:shop_app_flutter/widgets/cart_item.dart';
 
 class ShoppingCartScreen extends StatelessWidget {
@@ -43,7 +44,11 @@ class ShoppingCartScreen extends StatelessWidget {
                       'Place Order',
                       style: TextStyle(fontSize: 18),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Provider.of<Orders>(context, listen: false).addOrder(
+                          cartProducts: cart.cartList, total: cart.cartTotal);
+                      cart.clearCart();
+                    },
                   )
                 ],
               ),

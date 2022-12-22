@@ -55,7 +55,7 @@ class ProductDetailScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
