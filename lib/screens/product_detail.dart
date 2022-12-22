@@ -67,12 +67,39 @@ class ProductDetailScreen extends StatelessWidget {
                   ],
                 ),
                 onPressed: () {
-                  Provider.of<ShoppingCart>(context, listen: false).addItem(
+                  final cart =
+                      Provider.of<ShoppingCart>(context, listen: false);
+                  cart.addItem(
                       productId: product.id,
                       price: product.price,
                       title: product.title);
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      elevation: 3,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      content: Text('Added ${product.title} to cart',
+                          style: Theme.of(context)
+                              .copyWith(
+                                textTheme: TextTheme(
+                                  headline6: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                              )
+                              .textTheme
+                              .headline6),
+                      action: SnackBarAction(
+                        label: 'UNDO',
+                        textColor: Colors.red,
+                        onPressed: () {
+                          cart.removeSingleItem(product.id);
+                        },
+                      ),
+                      duration: Duration(seconds: 3),
+                    ),
+                  );
                 },
-              )
+              ),
             ],
           ),
         ));

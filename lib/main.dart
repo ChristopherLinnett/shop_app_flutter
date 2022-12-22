@@ -37,9 +37,6 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.indigo,
             ),
             fontFamily: 'Lato',
-            textTheme: const TextTheme(
-              bodyMedium: TextStyle(color: Colors.white),
-            ),
           ),
           initialRoute: ProductsOverviewScreen.routeName,
           routes: {

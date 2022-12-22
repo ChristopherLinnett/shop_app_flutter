@@ -20,10 +20,19 @@ class ProductItem extends StatelessWidget {
         footer: GridTileBar(
           title: Text(
             product.title,
-            style: Theme.of(context).textTheme.bodyMedium,
-            textAlign: TextAlign.center,
+            overflow: TextOverflow.visible,
+            style: Theme.of(context)
+                .copyWith(
+                  textTheme: TextTheme(
+                    headline6: TextStyle(color: Colors.white),
+                  ),
+                )
+                .textTheme
+                .bodyMedium,
+            textAlign: TextAlign.start,
           ),
-          leading: IconButton(
+          trailing: IconButton(
+            padding: EdgeInsets.symmetric(horizontal: 0),
             icon: Icon(
                 product.isFavourite ? Icons.favorite : Icons.favorite_outline),
             color: Theme.of(context).colorScheme.secondary,
@@ -31,41 +40,42 @@ class ProductItem extends StatelessWidget {
               product.toggleFavourite();
             },
           ),
-          trailing: IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            color: Theme.of(context).colorScheme.secondary,
-            onPressed: () {
-              cart.addItem(
-                  productId: product.id,
-                  price: product.price,
-                  title: product.title);
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  elevation: 3,
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  content: Text('Added ${product.title} to cart',
-                      style: Theme.of(context)
-                          .copyWith(
-                            textTheme: TextTheme(
-                              headline6:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                          )
-                          .textTheme
-                          .headline6),
-                  action: SnackBarAction(
-                    label: 'UNDO',
-                    textColor: Colors.red,
-                    onPressed: () {
-                      cart.removeSingleItem(product.id);
-                    },
-                  ),
-                  duration: Duration(seconds: 3),
-                ),
-              );
-            },
-          ),
+          // trailing: IconButton(
+          //   padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+          //   icon: const Icon(Icons.shopping_cart),
+          //   color: Theme.of(context).colorScheme.secondary,
+          //   onPressed: () {
+          //     cart.addItem(
+          //         productId: product.id,
+          //         price: product.price,
+          //         title: product.title);
+          //     ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          //     ScaffoldMessenger.of(context).showSnackBar(
+          //       SnackBar(
+          //         elevation: 3,
+          //         backgroundColor: Theme.of(context).colorScheme.primary,
+          //         content: Text('Added ${product.title} to cart',
+          //             style: Theme.of(context)
+          //                 .copyWith(
+          //                   textTheme: TextTheme(
+          //                     headline6:
+          //                         TextStyle(color: Colors.white, fontSize: 20),
+          //                   ),
+          //                 )
+          //                 .textTheme
+          //                 .headline6),
+          //         action: SnackBarAction(
+          //           label: 'UNDO',
+          //           textColor: Colors.red,
+          //           onPressed: () {
+          //             cart.removeSingleItem(product.id);
+          //           },
+          //         ),
+          //   //   //   //   duration: Duration(seconds: 3),
+          //   //   //   // ),
+          //   //   // );
+          //   // },
+          // ),
           backgroundColor: Colors.black87,
         ),
         child: GestureDetector(
