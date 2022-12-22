@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:shop_app_flutter/providers/products_provider.dart';
+import 'package:shop_app_flutter/screens/edit_product.dart';
 import 'package:shop_app_flutter/widgets/app_drawer.dart';
 import 'package:shop_app_flutter/widgets/user_product_item.dart';
 
@@ -18,7 +19,9 @@ class UserProductsScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(EditProductScreen.routeName);
+            },
           )
         ],
       ),
@@ -29,8 +32,10 @@ class UserProductsScreen extends StatelessWidget {
           itemBuilder: (_, index) => Column(
             children: [
               UserProductItemTile(
-                  title: productsData.items[index].title,
-                  imageUrl: productsData.items[index].imageUrl),
+                title: productsData.items[index].title,
+                imageUrl: productsData.items[index].imageUrl,
+                id: productsData.items[index].id,
+              ),
               Divider(),
             ],
           ),
