@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Product with ChangeNotifier {
   final String id;
@@ -15,8 +17,22 @@ class Product with ChangeNotifier {
       required this.imageUrl,
       this.isFavourite = false});
 
-  void toggleFavourite() {
+  Future<void> toggleFavourite() async {
     isFavourite = !isFavourite;
     notifyListeners();
+
+    var url = Uri.parse(
+        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json');
+    try {
+      var response = await http.patch(
+        url,
+        body: json.encode(
+          {'isFavourite': isFavourite},
+        ),
+      );
+    } catch (error) {
+      isFavourite = !isFavourite;
+      notifyListeners();
+    }
   }
 }
