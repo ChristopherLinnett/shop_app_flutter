@@ -18,6 +18,13 @@ class Products with ChangeNotifier {
     return items.firstWhere((item) => item.id == id);
   }
 
+  void deleteProduct(String id) {
+    _items.removeWhere((item) {
+      return item.id == id;
+    });
+    notifyListeners();
+  }
+
   void editProduct(String id, Product newProduct) {
     final prodIndex = _items.indexWhere((oldProduct) {
       return oldProduct.id == id;

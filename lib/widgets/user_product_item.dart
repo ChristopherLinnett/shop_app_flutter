@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app_flutter/providers/products_provider.dart';
 import 'package:shop_app_flutter/screens/edit_product.dart';
 
 class UserProductItemTile extends StatelessWidget {
@@ -33,7 +35,10 @@ class UserProductItemTile extends StatelessWidget {
             IconButton(
                 icon: Icon(Icons.delete),
                 color: Theme.of(context).errorColor,
-                onPressed: () {}),
+                onPressed: () {
+                  Provider.of<Products>(context, listen: false)
+                      .deleteProduct(id);
+                }),
           ],
         ),
       ),
