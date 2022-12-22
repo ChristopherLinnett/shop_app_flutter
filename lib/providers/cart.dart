@@ -44,6 +44,21 @@ class ShoppingCart with ChangeNotifier {
     return items;
   }
 
+  void removeSingleItem(String itemId) {
+    if (!_contents.containsKey(itemId)) {
+      return;
+    }
+    if (_contents[itemId]!.quantity > 1) {
+      _contents.update(itemId, (value) {
+        value.quantity -= 1;
+        return value;
+      });
+      notifyListeners();
+    } else {
+      removeItem(itemId);
+    }
+  }
+
   void removeItem(String itemId) {
     _contents.remove(itemId);
     notifyListeners();

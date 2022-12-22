@@ -19,6 +19,28 @@ class CartScreenItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dismissible(
       key: uniqueKey,
+      confirmDismiss: ((direction) {
+        return showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+              title: Text('Are You Sure?'),
+              content: Text(
+                'Do you want to remove ${title.toUpperCase()} from the cart?',
+              ),
+              actions: [
+                TextButton(
+                  child: Text('Yes',
+                      style: TextStyle(
+                          color: Colors.red, fontWeight: FontWeight.bold)),
+                  onPressed: () => Navigator.pop(context, true),
+                ),
+                TextButton(
+                  child: Text('No'),
+                  onPressed: () => Navigator.pop(context, false),
+                ),
+              ]),
+        );
+      }),
       background: Container(
           color: Theme.of(context).errorColor,
           alignment: Alignment.centerRight,
@@ -45,7 +67,7 @@ class CartScreenItem extends StatelessWidget {
               ),
             ),
             title: Text(title),
-            subtitle: Text('Total: \$${price * quantity}'),
+            subtitle: Text('Total: \$${(price * quantity).toStringAsFixed(2)}'),
             trailing:
                 Text('x$quantity', style: const TextStyle(color: Colors.black)),
           ),
