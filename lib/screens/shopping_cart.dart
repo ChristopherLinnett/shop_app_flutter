@@ -49,13 +49,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                   TextButton(
-                    child: isLoading
-                        ? CircularProgressIndicator.adaptive()
-                        : const Text(
-                            'Place Order',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                    onPressed: cart.cartList.length < 1
+                    onPressed: cart.cartList.isEmpty
                         ? null
                         : () async {
                             if (cart.cartList.isEmpty || isLoading) {
@@ -81,6 +75,12 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                               isLoading = false;
                             });
                           },
+                    child: isLoading
+                        ? CircularProgressIndicator.adaptive()
+                        : const Text(
+                            'Place Order',
+                            style: TextStyle(fontSize: 18),
+                          ),
                   )
                 ],
               ),

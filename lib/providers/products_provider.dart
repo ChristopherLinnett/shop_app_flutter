@@ -39,7 +39,6 @@ class Products with ChangeNotifier {
     } catch (error) {
       _items.insert(existingItemIndex, existingItem);
       notifyListeners();
-      print('error in deleting');
       throw HttpException('Deletion Error');
     }
     existingItem = null;
