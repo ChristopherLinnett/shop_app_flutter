@@ -24,6 +24,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   final List<Product> loadedProducts = [...dummyProductList];
   bool showOnlyFavourites = false;
   var _isInit = false;
+  bool _isLoading = false;
 
   @override
   void didChangeDependencies() {
@@ -32,7 +33,12 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       return;
     }
     _isInit = true;
-    Provider.of<Products>(context, listen: false).fetchProducts();
+    _isLoading = true;
+    Provider.of<Products>(context, listen: false).fetchProducts().then((_) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 
   @override
@@ -67,7 +73,9 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
             ],
           ),
         ]),
-        body: ProductGrid(favouritesOnly: showOnlyFavourites),
+        body: _isLoading
+            ? Center(child: CircularProgressIndicator.adaptive())
+            : ProductGrid(favouritesOnly: showOnlyFavourites),
         drawer: AppDrawer());
   }
 }
