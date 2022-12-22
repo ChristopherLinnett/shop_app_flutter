@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:shop_app_flutter/models/http_exception.dart';
 import 'package:shop_app_flutter/providers/product.dart';
 
 class Products with ChangeNotifier {
@@ -19,20 +20,56 @@ class Products with ChangeNotifier {
     return items.firstWhere((item) => item.id == id);
   }
 
-  void deleteProduct(String id) {
-    _items.removeWhere((item) {
+  Future<void> deleteProduct(String id) async {
+    final url = Uri.parse(
+        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json');
+    final existingItemIndex = _items.indexWhere((item) {
       return item.id == id;
     });
+    Product? existingItem = _items[existingItemIndex];
+    try {
+      _items.removeWhere((item) {
+        return item.id == id;
+      });
+      notifyListeners();
+      var response = await http.delete(url);
+      if (response.statusCode >= 400) {
+        throw HttpException('Deletion Error');
+      }
+    } catch (error) {
+      _items.insert(existingItemIndex, existingItem);
+      notifyListeners();
+      print('error in deleting');
+      throw HttpException('Deletion Error');
+    }
+    existingItem = null;
     notifyListeners();
   }
 
-  void editProduct(String id, Product newProduct) {
+  Future<void> editProduct(String id, Product newProduct) async {
+    final url = Uri.parse(
+        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json');
     final prodIndex = _items.indexWhere((oldProduct) {
       return oldProduct.id == id;
     });
     if (prodIndex >= 0) {
-      _items[prodIndex] = newProduct;
-      notifyListeners();
+      try {
+        await http.patch(
+          url,
+          body: json.encode(
+            {
+              'title': newProduct.title,
+              'description': newProduct.description,
+              'price': newProduct.price,
+              'imageUrl': newProduct.imageUrl,
+            },
+          ),
+        );
+        _items[prodIndex] = newProduct;
+        notifyListeners();
+      } catch (error) {
+        print(error.toString());
+      }
     } else {
       throw 'index not found while editing';
     }
@@ -48,15 +85,14 @@ class Products with ChangeNotifier {
       extractedData.forEach((productId, product) {
         var newProduct = Product(
             id: productId,
-            title: product['title'] ?? 'error',
-            description: product['description'] ?? 'error',
-            price: product['price'] ?? 'error',
-            imageUrl: product['imageUrl'] ?? false,
-            isFavourite: product['isFavourite'] ?? 'error');
+            title: product['title'],
+            description: product['description'],
+            price: product['price'],
+            imageUrl: product['imageUrl'],
+            isFavourite: product['isFavourite']);
         loadedProducts.add(newProduct);
       });
       _items = [...loadedProducts];
-      print(_items);
       notifyListeners();
     } catch (error) {
       print(error.toString());

@@ -119,11 +119,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
           });
         }
       } else {
-        Provider.of<Products>(context, listen: false)
+        await Provider.of<Products>(context, listen: false)
             .editProduct(_editedProduct.id, _editedProduct);
         setState(
           () {
             isLoading = false;
+            Navigator.of(context).pop();
           },
         );
       }
