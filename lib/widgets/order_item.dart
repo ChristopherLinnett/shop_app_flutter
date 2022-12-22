@@ -56,7 +56,7 @@ class _OrderItemTileState extends State<OrderItemTile> {
                             .textTheme
                             .titleLarge),
                     Text(
-                        'x${widget.orderItem.productList[i].quantity}  @ \$${widget.orderItem.productList[i].price}ea',
+                        'x${widget.orderItem.productList[i].quantity}  @ \$${widget.orderItem.productList[i].price.toStringAsFixed(2)} ea',
                         style: Theme.of(context).textTheme.subtitle1),
                   ],
                 ),

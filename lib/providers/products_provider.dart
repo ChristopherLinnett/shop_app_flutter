@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:shop_app_flutter/dummyproducts.dart';
 import 'package:shop_app_flutter/providers/product.dart';
 
 class Products with ChangeNotifier {
-  final List<Product> _items = [...dummyProductList];
+  List<Product> _items = [];
 
   List<Product> get items {
     return [..._items];
@@ -39,27 +38,49 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future<void> addProduct(Product product) {
+  Future<void> fetchProducts() async {
     final url = Uri.parse(
         'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products.json');
-    return http
-        .post(url,
-            body: json.encode({
-              'title': product.description,
-              'description': product.description,
-              'imageUrl': product.imageUrl,
-              'price': product.price,
-              'isFavourite': product.isFavourite
-            }))
-        .then((response) {
-      final newProduct = Product(
-          id: json.decode(response.body)['name'],
-          title: product.title,
-          description: product.description,
-          price: product.price,
-          imageUrl: product.imageUrl);
-      _items.add(newProduct);
+    try {
+      final response = await http.get(url);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final List<Product> loadedProducts = [];
+      extractedData.forEach((productId, product) {
+        var newProduct = Product(
+            id: productId,
+            title: product['title'] ?? 'error',
+            description: product['description'] ?? 'error',
+            price: product['price'] ?? 'error',
+            imageUrl: product['imageUrl'] ?? false,
+            isFavourite: product['isFavourite'] ?? 'error');
+        loadedProducts.add(newProduct);
+      });
+      _items = [...loadedProducts];
+      print(_items);
       notifyListeners();
-    });
+    } catch (error) {
+      print(error.toString());
+    }
+  }
+
+  Future<void> addProduct(Product product) async {
+    final url = Uri.parse(
+        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products.json');
+    var response = await http.post(url,
+        body: json.encode({
+          'title': product.title,
+          'description': product.description,
+          'imageUrl': product.imageUrl,
+          'price': product.price,
+          'isFavourite': product.isFavourite
+        }));
+    final newProduct = Product(
+        id: json.decode(response.body)['name'],
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl);
+    _items.add(newProduct);
+    notifyListeners();
   }
 }
