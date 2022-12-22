@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shop_app_flutter/screens/edit_product.dart';
 
 class UserProductItemTile extends StatelessWidget {
   const UserProductItemTile(
@@ -21,7 +22,10 @@ class UserProductItemTile extends StatelessWidget {
               IconButton(
                   icon: Icon(Icons.edit),
                   color: Theme.of(context).colorScheme.primary,
-                  onPressed: () {}),
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(EditProductScreen.routeName);
+                  }),
               IconButton(
                   icon: Icon(Icons.delete),
                   color: Theme.of(context).errorColor,
