@@ -4,13 +4,22 @@ import 'package:shop_app_flutter/providers/cart.dart';
 import 'package:shop_app_flutter/providers/orders.dart';
 import 'package:shop_app_flutter/widgets/cart_item.dart';
 
-class ShoppingCartScreen extends StatelessWidget {
+class ShoppingCartScreen extends StatefulWidget {
   const ShoppingCartScreen({super.key});
   static const routeName = '/shopping-cart-screen';
 
   @override
+  State<ShoppingCartScreen> createState() => _ShoppingCartScreenState();
+}
+
+class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
+  bool isLoading = false;
+
+  @override
   Widget build(BuildContext context) {
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
     final cart = Provider.of<ShoppingCart>(context);
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Shopping Cart'),
@@ -40,18 +49,38 @@ class ShoppingCartScreen extends StatelessWidget {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                   TextButton(
-                    child: const Text(
-                      'Place Order',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    onPressed: () {
-                      if (cart.cartList.isEmpty) {
-                        return;
-                      }
-                      Provider.of<Orders>(context, listen: false).addOrder(
-                          cartProducts: cart.cartList, total: cart.cartTotal);
-                      cart.clearCart();
-                    },
+                    child: isLoading
+                        ? CircularProgressIndicator.adaptive()
+                        : const Text(
+                            'Place Order',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                    onPressed: cart.cartList.length < 1
+                        ? null
+                        : () async {
+                            if (cart.cartList.isEmpty || isLoading) {
+                              return;
+                            }
+                            setState(() {
+                              isLoading = true;
+                            });
+                            await Provider.of<Orders>(context, listen: false)
+                                .addOrder(
+                                    cartProducts: cart.cartList,
+                                    total: cart.cartTotal);
+                            cart.clearCart();
+                            scaffoldMessenger.hideCurrentSnackBar();
+                            scaffoldMessenger.showSnackBar(SnackBar(
+                              content: Text(
+                                'Successfully Placed Order',
+                                textAlign: TextAlign.center,
+                              ),
+                              backgroundColor: theme.colorScheme.primary,
+                            ));
+                            setState(() {
+                              isLoading = false;
+                            });
+                          },
                   )
                 ],
               ),

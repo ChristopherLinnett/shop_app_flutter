@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shop_app_flutter/models/http_exception.dart';
+
 class Product with ChangeNotifier {
   final String id;
   final String title;
@@ -30,6 +32,9 @@ class Product with ChangeNotifier {
           {'isFavourite': isFavourite},
         ),
       );
+      if (response.statusCode >= 400) {
+        throw HttpException('Could Not Update Favourite');
+      }
     } catch (error) {
       isFavourite = !isFavourite;
       notifyListeners();
