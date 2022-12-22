@@ -45,6 +45,9 @@ class ShoppingCartScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 18),
                     ),
                     onPressed: () {
+                      if (cart.cartList.isEmpty) {
+                        return;
+                      }
                       Provider.of<Orders>(context, listen: false).addOrder(
                           cartProducts: cart.cartList, total: cart.cartTotal);
                       cart.clearCart();
