@@ -35,28 +35,31 @@ class MyApp extends StatelessWidget {
           create: (context) => Auth(),
         ),
       ],
-      child: MaterialApp(
-          title: 'MyShop',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSwatch(
-              primarySwatch: Colors.indigo,
+      child: Consumer<Auth>(
+        builder: (ctx, auth, _) => MaterialApp(
+            title: 'MyShop',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSwatch(
+                primarySwatch: Colors.indigo,
+              ),
+              fontFamily: 'Lato',
             ),
-            fontFamily: 'Lato',
-          ),
-          initialRoute: AuthScreen.routeName,
-          routes: {
-            AuthScreen.routeName: (context) => const AuthScreen(),
-            ProductsOverviewScreen.routeName: (context) =>
-                const ProductsOverviewScreen(),
-            ProductDetailScreen.routeName: (context) =>
-                const ProductDetailScreen(),
-            ShoppingCartScreen.routeName: (context) =>
-                const ShoppingCartScreen(),
-            OrdersScreen.routeName: (context) => OrdersScreen(),
-            UserProductsScreen.routeName: (context) =>
-                const UserProductsScreen(),
-            EditProductScreen.routeName: (context) => const EditProductScreen(),
-          }),
+            home: auth.isAuth ? ProductsOverviewScreen() : AuthScreen(),
+            routes: {
+              AuthScreen.routeName: (context) => const AuthScreen(),
+              ProductsOverviewScreen.routeName: (context) =>
+                  const ProductsOverviewScreen(),
+              ProductDetailScreen.routeName: (context) =>
+                  const ProductDetailScreen(),
+              ShoppingCartScreen.routeName: (context) =>
+                  const ShoppingCartScreen(),
+              OrdersScreen.routeName: (context) => OrdersScreen(),
+              UserProductsScreen.routeName: (context) =>
+                  const UserProductsScreen(),
+              EditProductScreen.routeName: (context) =>
+                  const EditProductScreen(),
+            }),
+      ),
     );
   }
 }

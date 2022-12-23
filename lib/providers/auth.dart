@@ -8,6 +8,18 @@ class Auth with ChangeNotifier {
   String? _token;
   DateTime? _expiryDate;
   String? _userId;
+
+  String? get token {
+    if (_token != null && _expiryDate!.isAfter(DateTime.now())) {
+      return _token!;
+    }
+    return null;
+  }
+
+  bool get isAuth {
+    return token != null;
+  }
+
   final String API_KEY = 'AIzaSyDvuSbbSpHokXVMRBnnZfEpEDIbz9yKp-4';
 
   Future<void> authenticate(
@@ -29,9 +41,17 @@ class Auth with ChangeNotifier {
       if (responseBody['error'] != null) {
         throw HttpException(responseBody['error']['message']);
       }
+      _token = responseBody['idToken'];
+      _userId = responseBody['localId'];
+      _expiryDate = DateTime.now().add(
+        Duration(
+          seconds: int.parse(responseBody['expiresIn']),
+        ),
+      );
     } catch (error) {
       rethrow;
     }
+    notifyListeners();
   }
 
   Future<void> signin({required String email, required String password}) async {
