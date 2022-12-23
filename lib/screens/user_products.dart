@@ -10,9 +10,13 @@ class UserProductsScreen extends StatelessWidget {
   const UserProductsScreen({super.key});
   static const routeName = 'UserProductsScreen';
 
+  Future<void> _refreshProducts(BuildContext context) async {
+    await Provider.of<Products>(context, listen: false)
+        .fetchProducts(filterByUser: true);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final productsData = Provider.of<Products>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Products'),
@@ -25,26 +29,34 @@ class UserProductsScreen extends StatelessWidget {
           )
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await productsData.fetchProducts();
-        },
-        child: Padding(
-          padding: EdgeInsets.all(8),
-          child: ListView.builder(
-            itemCount: productsData.items.length,
-            itemBuilder: (_, index) => Column(
-              children: [
-                UserProductItemTile(
-                  title: productsData.items[index].title,
-                  imageUrl: productsData.items[index].imageUrl,
-                  id: productsData.items[index].id,
+      body: FutureBuilder(
+        future: _refreshProducts(context),
+        builder: (ctx, snapshot) => snapshot.connectionState ==
+                ConnectionState.waiting
+            ? Center(child: CircularProgressIndicator.adaptive())
+            : RefreshIndicator(
+                onRefresh: () {
+                  return _refreshProducts(context);
+                },
+                child: Consumer<Products>(
+                  builder: ((ctx, productsData, _) => Padding(
+                        padding: EdgeInsets.all(8),
+                        child: ListView.builder(
+                          itemCount: productsData.items.length,
+                          itemBuilder: (_, index) => Column(
+                            children: [
+                              UserProductItemTile(
+                                title: productsData.items[index].title,
+                                imageUrl: productsData.items[index].imageUrl,
+                                id: productsData.items[index].id,
+                              ),
+                              Divider(),
+                            ],
+                          ),
+                        ),
+                      )),
                 ),
-                Divider(),
-              ],
-            ),
-          ),
-        ),
+              ),
       ),
       drawer: AppDrawer(),
     );

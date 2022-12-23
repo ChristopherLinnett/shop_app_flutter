@@ -34,7 +34,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     }
     _isInit = true;
     _isLoading = true;
-    Provider.of<Products>(context, listen: false).fetchProducts().then((_) {
+    Provider.of<Products>(context, listen: false).fetchProducts(filterByUser: false).then((_) {
       setState(() {
         _isLoading = false;
       });

@@ -89,9 +89,14 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future<void> fetchProducts() async {
-    final url = Uri.parse(
-        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken&orderBy="creator"&equalTo="$userId"');
+  Future<void> fetchProducts({required bool filterByUser}) async {
+    final apiSnippet = '&orderBy="creator"&equalTo="$userId"';
+    var rawUrl =
+        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken';
+    if (filterByUser) {
+      rawUrl = '$rawUrl$apiSnippet';
+    }
+    var url = Uri.parse(rawUrl);
     var favUrl = Uri.parse(
         'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/userFavourites/$userId/products.json?auth=$authToken');
 
