@@ -6,10 +6,20 @@ import 'package:shop_app_flutter/models/http_exception.dart';
 import 'package:shop_app_flutter/providers/product.dart';
 
 class Products with ChangeNotifier {
+  String? _authToken;
+  Products({String? token, required List<Product>? prevItems}) {
+    _authToken = token;
+    _items = prevItems ?? [];
+  }
+
+  String get authToken {
+    return _authToken ?? '';
+  }
+
   List<Product> _items = [];
 
   List<Product> get items {
-    return [..._items];
+    return [..._items] ?? [];
   }
 
   List<Product> get favourites {
@@ -22,7 +32,7 @@ class Products with ChangeNotifier {
 
   Future<void> deleteProduct(String id) async {
     final url = Uri.parse(
-        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json');
+        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json?auth=$authToken');
     final existingItemIndex = _items.indexWhere((item) {
       return item.id == id;
     });
@@ -47,7 +57,7 @@ class Products with ChangeNotifier {
 
   Future<void> editProduct(String id, Product newProduct) async {
     final url = Uri.parse(
-        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json');
+        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json?auth=$authToken');
     final prodIndex = _items.indexWhere((oldProduct) {
       return oldProduct.id == id;
     });
@@ -76,7 +86,7 @@ class Products with ChangeNotifier {
 
   Future<void> fetchProducts() async {
     final url = Uri.parse(
-        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products.json');
+        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken');
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -103,7 +113,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url = Uri.parse(
-        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products.json');
+        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken');
     var response = await http.post(url,
         body: json.encode({
           'title': product.title,

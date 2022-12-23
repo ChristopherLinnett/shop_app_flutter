@@ -42,27 +42,27 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              Text('\$${product.price}',
+              Text('\$${product.price.toStringAsFixed(2)}',
                   style: Theme.of(context).textTheme.headline3),
               const SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  product.description,
-                  textAlign: TextAlign.center,
-                  softWrap: true,
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-              ),
-              const SizedBox(height: 20),
               ElevatedButton(
+                style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all(Size(300, 75))),
                 child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Text('Add to Cart'),
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text('Add to Cart',
+                        style: Theme.of(context)
+                            .copyWith(
+                                textTheme: TextTheme(
+                                    headline5: TextStyle(
+                                        color: Colors.white, fontSize: 24)))
+                            .textTheme
+                            .headline5),
                     Icon(
                       Icons.add_shopping_cart,
+                      size: 40,
                     ),
                   ],
                 ),
@@ -100,6 +100,17 @@ class ProductDetailScreen extends StatelessWidget {
                   );
                 },
               ),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  product.description,
+                  textAlign: TextAlign.center,
+                  softWrap: true,
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ),
+              const SizedBox(height: 20),
             ],
           ),
         ));

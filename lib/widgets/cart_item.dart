@@ -61,7 +61,7 @@ class CartScreenItem extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: FittedBox(
-                  child: Text('\$$price',
+                  child: Text('\$${price.toStringAsFixed(2)}',
                       style: const TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ),

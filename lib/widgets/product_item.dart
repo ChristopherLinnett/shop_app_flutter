@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app_flutter/providers/auth.dart';
 import 'package:shop_app_flutter/providers/product.dart';
 import 'package:shop_app_flutter/screens/product_detail.dart';
 
@@ -35,7 +36,8 @@ class ProductItem extends StatelessWidget {
                 product.isFavourite ? Icons.favorite : Icons.favorite_outline),
             color: Theme.of(context).colorScheme.secondary,
             onPressed: () {
-              product.toggleFavourite();
+              var token = Provider.of<Auth>(context, listen: false).token;
+              product.toggleFavourite(token: token);
             },
           ),
           // trailing: IconButton(
