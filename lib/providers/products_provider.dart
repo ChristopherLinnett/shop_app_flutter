@@ -67,7 +67,7 @@ class Products with ChangeNotifier {
         _items[prodIndex] = newProduct;
         notifyListeners();
       } catch (error) {
-        print(error.toString());
+        print(error);
       }
     } else {
       throw 'index not found while editing';
