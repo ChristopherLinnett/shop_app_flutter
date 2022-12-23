@@ -83,11 +83,14 @@ class ProductItem extends StatelessWidget {
             Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
                 arguments: product.id);
           },
-          child: CachedNetworkImage(
-            imageUrl: product.imageUrl,
-            fit: BoxFit.cover,
-            placeholder: (context, url) =>
-                const CircularProgressIndicator.adaptive(),
+          child: Hero(
+            tag: product.id,
+            child: FadeInImage(
+                image: CachedNetworkImageProvider(product.imageUrl),
+                fadeInCurve: Curves.easeIn,
+                fadeInDuration: Duration(milliseconds: 300),
+                fit: BoxFit.cover,
+                placeholder: AssetImage('assets/product-placeholder.png')),
           ),
         ),
       ),
