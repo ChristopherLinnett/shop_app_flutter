@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:shop_app_flutter/models/http_exception.dart';
 
@@ -8,6 +9,7 @@ class Auth with ChangeNotifier {
   String? _token;
   DateTime? _expiryDate;
   String? _userId;
+  Timer? _authTimer;
 
   String get userId {
     return _userId ?? '';
@@ -55,6 +57,7 @@ class Auth with ChangeNotifier {
     } catch (error) {
       rethrow;
     }
+    autoLogout();
     notifyListeners();
   }
 
@@ -65,5 +68,23 @@ class Auth with ChangeNotifier {
 
   Future<void> signup({required String email, required String password}) async {
     return authenticate(email: email, password: password, urlSegment: 'signUp');
+  }
+
+  void logout() {
+    if (_authTimer != null) {
+      _authTimer!.cancel();
+    }
+    _token = null;
+    _userId = null;
+    _expiryDate = null;
+    notifyListeners();
+  }
+
+  void autoLogout() {
+    if (_authTimer != null) {
+      _authTimer!.cancel();
+    }
+    final timeToExpiry = _expiryDate!.difference(DateTime.now()).inSeconds;
+    _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
   }
 }
