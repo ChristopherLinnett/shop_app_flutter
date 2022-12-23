@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
           create: (context) => Products(prevItems: [], token: null),
           update: (ctx, auth, prevProducts) => Products(
               token: auth.token,
-              prevItems: prevProducts == null ? [] : prevProducts.items),
+              prevItems: prevProducts == null ? [] : prevProducts.items,
+              userId: auth.userId),
         ),
         ChangeNotifierProvider(
           create: (context) => ShoppingCart(),

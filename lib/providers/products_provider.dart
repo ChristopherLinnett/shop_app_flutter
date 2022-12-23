@@ -7,9 +7,14 @@ import 'package:shop_app_flutter/providers/product.dart';
 
 class Products with ChangeNotifier {
   String? _authToken;
-  Products({String? token, required List<Product>? prevItems}) {
+  String? _userId;
+  Products({String? token, required List<Product>? prevItems, String? userId}) {
+    _userId = userId;
     _authToken = token;
     _items = prevItems ?? [];
+  }
+  String get userId {
+    return _userId ?? '';
   }
 
   String get authToken {
@@ -19,7 +24,7 @@ class Products with ChangeNotifier {
   List<Product> _items = [];
 
   List<Product> get items {
-    return [..._items] ?? [];
+    return [..._items];
   }
 
   List<Product> get favourites {
@@ -86,10 +91,15 @@ class Products with ChangeNotifier {
 
   Future<void> fetchProducts() async {
     final url = Uri.parse(
-        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken');
+        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken&orderBy="creator"&equalTo="$userId"');
+    var favUrl = Uri.parse(
+        'https://flutter-shop-app-a0ea3-default-rtdb.asia-southeast1.firebasedatabase.app/userFavourites/$userId/products.json?auth=$authToken');
+
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final favouriteResponse = await http.get(favUrl);
+      final favouriteData = json.decode(favouriteResponse.body);
       final List<Product> loadedProducts = [];
       if (extractedData['error'] != null) {
         throw HttpException('Not Authorized');
@@ -101,7 +111,9 @@ class Products with ChangeNotifier {
             description: product['description'],
             price: product['price'],
             imageUrl: product['imageUrl'],
-            isFavourite: product['isFavourite']);
+            isFavourite: favouriteData == null
+                ? false
+                : favouriteData[productId] ?? false);
         loadedProducts.add(newProduct);
       });
       _items = [...loadedProducts];
@@ -120,7 +132,7 @@ class Products with ChangeNotifier {
           'description': product.description,
           'imageUrl': product.imageUrl,
           'price': product.price,
-          'isFavourite': product.isFavourite
+          'creator': userId,
         }));
     final newProduct = Product(
         id: json.decode(response.body)['name'],
