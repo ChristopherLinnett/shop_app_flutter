@@ -82,7 +82,7 @@ class Products with ChangeNotifier {
         _items[prodIndex] = newProduct;
         notifyListeners();
       } catch (error) {
-        print(error);
+        rethrow;
       }
     } else {
       throw 'index not found while editing';
@@ -124,7 +124,7 @@ class Products with ChangeNotifier {
       _items = [...loadedProducts];
       notifyListeners();
     } catch (error) {
-      print(error);
+      rethrow;
     }
   }
 

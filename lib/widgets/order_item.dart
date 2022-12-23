@@ -15,29 +15,35 @@ class _OrderItemTileState extends State<OrderItemTile> {
   bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(10),
-      child: Column(
-        children: [
-          ListTile(
-            title: Text('\$${widget.orderItem.amount}'),
-            subtitle: Text(
-              DateFormat('EEEEE dd MMMM yyyy hh:mm a')
-                  .format(widget.orderItem.ordertime),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      height: _isExpanded
+          ? min(widget.orderItem.productList.length * 30 + 120, 220)
+          : 92,
+      child: Card(
+        margin: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            ListTile(
+              title: Text('\$${widget.orderItem.amount}'),
+              subtitle: Text(
+                DateFormat('EEEEE dd MMMM yyyy hh:mm a')
+                    .format(widget.orderItem.ordertime),
+              ),
+              trailing: IconButton(
+                icon: Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
+                onPressed: () {
+                  setState(() {
+                    _isExpanded = !_isExpanded;
+                  });
+                },
+              ),
             ),
-            trailing: IconButton(
-              icon: Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
-              onPressed: () {
-                setState(() {
-                  _isExpanded = !_isExpanded;
-                });
-              },
-            ),
-          ),
-          if (_isExpanded)
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-              height: min(widget.orderItem.productList.length * 20 + 30, 150),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              height:
+                  _isExpanded ? widget.orderItem.productList.length * 30 : 0,
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
               child: ListView.builder(
                 itemCount: widget.orderItem.productList.length,
                 itemBuilder: (context, i) => Row(
@@ -46,7 +52,7 @@ class _OrderItemTileState extends State<OrderItemTile> {
                     Text(widget.orderItem.productList[i].title,
                         style: Theme.of(context)
                             .copyWith(
-                              textTheme: TextTheme(
+                              textTheme: const TextTheme(
                                 titleLarge: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
@@ -62,7 +68,8 @@ class _OrderItemTileState extends State<OrderItemTile> {
                 ),
               ),
             )
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -28,14 +28,14 @@ class UserProductItemTile extends StatelessWidget {
         child: Row(
           children: [
             IconButton(
-                icon: Icon(Icons.edit),
+                icon: const Icon(Icons.edit),
                 color: Theme.of(context).colorScheme.primary,
                 onPressed: () {
                   Navigator.of(context)
                       .pushNamed(EditProductScreen.routeName, arguments: id);
                 }),
             IconButton(
-                icon: Icon(Icons.delete),
+                icon: const Icon(Icons.delete),
                 color: Theme.of(context).errorColor,
                 onPressed: () async {
                   try {
@@ -44,7 +44,7 @@ class UserProductItemTile extends StatelessWidget {
                   } catch (error) {
                     scaffoldMessenger.hideCurrentSnackBar();
                     scaffoldMessenger.showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Text(
                           'Failed to Delete Product',
                           textAlign: TextAlign.center,

@@ -74,8 +74,8 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           ),
         ]),
         body: _isLoading
-            ? Center(child: CircularProgressIndicator.adaptive())
+            ? const Center(child: CircularProgressIndicator.adaptive())
             : ProductGrid(favouritesOnly: showOnlyFavourites),
-        drawer: AppDrawer());
+        drawer: const AppDrawer());
   }
 }

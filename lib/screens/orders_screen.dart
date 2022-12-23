@@ -30,10 +30,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
     final orderData = Provider.of<Orders>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Orders'),
+        title: const Text('Your Orders'),
       ),
       body: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator.adaptive(),
             )
           : ListView.builder(
@@ -41,7 +41,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               itemBuilder: (ctx, index) =>
                   OrderItemTile(orderItem: orderData.orders[index]),
             ),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
     );
   }
 }

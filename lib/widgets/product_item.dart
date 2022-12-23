@@ -22,7 +22,7 @@ class ProductItem extends StatelessWidget {
             overflow: TextOverflow.visible,
             style: Theme.of(context)
                 .copyWith(
-                  textTheme: TextTheme(
+                  textTheme: const TextTheme(
                     headline6: TextStyle(color: Colors.white),
                   ),
                 )
@@ -31,7 +31,7 @@ class ProductItem extends StatelessWidget {
             textAlign: TextAlign.start,
           ),
           trailing: IconButton(
-            padding: EdgeInsets.symmetric(horizontal: 0),
+            padding: const EdgeInsets.symmetric(horizontal: 0),
             icon: Icon(
                 product.isFavourite ? Icons.favorite : Icons.favorite_outline),
             color: Theme.of(context).colorScheme.secondary,
@@ -88,9 +88,9 @@ class ProductItem extends StatelessWidget {
             child: FadeInImage(
                 image: CachedNetworkImageProvider(product.imageUrl),
                 fadeInCurve: Curves.easeIn,
-                fadeInDuration: Duration(milliseconds: 300),
+                fadeInDuration: const Duration(milliseconds: 300),
                 fit: BoxFit.cover,
-                placeholder: AssetImage('assets/product-placeholder.png')),
+                placeholder: const AssetImage('assets/product-placeholder.png')),
           ),
         ),
       ),

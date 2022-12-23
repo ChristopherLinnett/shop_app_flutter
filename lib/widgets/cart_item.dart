@@ -23,19 +23,19 @@ class CartScreenItem extends StatelessWidget {
         return showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-              title: Text('Are You Sure?'),
+              title: const Text('Are You Sure?'),
               content: Text(
                 'Do you want to remove ${title.toUpperCase()} from the cart?',
               ),
               actions: [
                 TextButton(
-                  child: Text('Yes',
+                  child: const Text('Yes',
                       style: TextStyle(
                           color: Colors.red, fontWeight: FontWeight.bold)),
                   onPressed: () => Navigator.pop(context, true),
                 ),
                 TextButton(
-                  child: Text('No'),
+                  child: const Text('No'),
                   onPressed: () => Navigator.pop(context, false),
                 ),
               ]),

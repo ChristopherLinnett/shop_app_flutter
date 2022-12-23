@@ -100,11 +100,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
           await showDialog(
             context: context,
             builder: (ctx) => AlertDialog(
-              title: Text('An Error Occurred'),
-              content: Text('Something went wrong'),
+              title: const Text('An Error Occurred'),
+              content: const Text('Something went wrong'),
               actions: [
                 TextButton(
-                  child: Text('OK'),
+                  child: const Text('OK'),
                   onPressed: () {
                     Navigator.of(ctx).pop();
                   },
@@ -135,16 +135,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Product'),
+        title: const Text('Edit Product'),
         actions: [
           IconButton(
             onPressed: _saveForm,
-            icon: Icon(Icons.save),
+            icon: const Icon(Icons.save),
           ),
         ],
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator.adaptive())
+          ? const Center(child: CircularProgressIndicator.adaptive())
           : Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
@@ -154,7 +154,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       TextFormField(
-                        decoration: InputDecoration(labelText: 'Title'),
+                        decoration: const InputDecoration(labelText: 'Title'),
                         initialValue: _initValues['title'],
                         textInputAction: TextInputAction.next,
                         onFieldSubmitted: (_) {
@@ -183,7 +183,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: InputDecoration(labelText: 'Price'),
+                        decoration: const InputDecoration(labelText: 'Price'),
                         initialValue: _initValues['price'],
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.number,
@@ -214,7 +214,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: InputDecoration(labelText: 'Description'),
+                        decoration: const InputDecoration(labelText: 'Description'),
                         initialValue: _initValues['description'],
                         maxLines: 3,
                         keyboardType: TextInputType.multiline,
@@ -248,12 +248,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           Container(
                             width: 100,
                             height: 100,
-                            margin: EdgeInsets.only(top: 8, right: 10),
+                            margin: const EdgeInsets.only(top: 8, right: 10),
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey, width: 1),
                             ),
                             child: !urlIsValid
-                                ? Text('Enter Image Url')
+                                ? const Text('Enter Image Url')
                                 : FittedBox(
                                     child: CachedNetworkImage(
                                         imageUrl: _imageUrlController.text,
@@ -262,7 +262,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           ),
                           Expanded(
                             child: TextFormField(
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 labelText: 'Image URL',
                               ),
                               keyboardType: TextInputType.url,

@@ -65,7 +65,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                             cart.clearCart();
                             scaffoldMessenger.hideCurrentSnackBar();
                             scaffoldMessenger.showSnackBar(SnackBar(
-                              content: Text(
+                              content: const Text(
                                 'Successfully Placed Order',
                                 textAlign: TextAlign.center,
                               ),
@@ -76,7 +76,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                             });
                           },
                     child: isLoading
-                        ? CircularProgressIndicator.adaptive()
+                        ? const CircularProgressIndicator.adaptive()
                         : const Text(
                             'Place Order',
                             style: TextStyle(fontSize: 18),

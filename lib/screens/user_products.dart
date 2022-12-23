@@ -19,10 +19,10 @@ class UserProductsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Products'),
+        title: const Text('Your Products'),
         actions: [
           IconButton(
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             onPressed: () {
               Navigator.of(context).pushNamed(EditProductScreen.routeName);
             },
@@ -33,14 +33,14 @@ class UserProductsScreen extends StatelessWidget {
         future: _refreshProducts(context),
         builder: (ctx, snapshot) => snapshot.connectionState ==
                 ConnectionState.waiting
-            ? Center(child: CircularProgressIndicator.adaptive())
+            ? const Center(child: CircularProgressIndicator.adaptive())
             : RefreshIndicator(
                 onRefresh: () {
                   return _refreshProducts(context);
                 },
                 child: Consumer<Products>(
                   builder: ((ctx, productsData, _) => Padding(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: ListView.builder(
                           itemCount: productsData.items.length,
                           itemBuilder: (_, index) => Column(
@@ -50,7 +50,7 @@ class UserProductsScreen extends StatelessWidget {
                                 imageUrl: productsData.items[index].imageUrl,
                                 id: productsData.items[index].id,
                               ),
-                              Divider(),
+                              const Divider(),
                             ],
                           ),
                         ),
@@ -58,7 +58,7 @@ class UserProductsScreen extends StatelessWidget {
                 ),
               ),
       ),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
     );
   }
 }

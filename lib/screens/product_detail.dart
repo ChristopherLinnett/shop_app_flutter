@@ -36,7 +36,7 @@ class ProductDetailScreen extends StatelessWidget {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Container(
-                padding: EdgeInsets.all(6),
+                padding: const EdgeInsets.all(6),
                 color: Theme.of(context).colorScheme.primary.withOpacity(0.6),
                 child: Text(product.title),
               ),
@@ -63,7 +63,7 @@ class ProductDetailScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(32.0),
                   child: ElevatedButton(
                     style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.all(Size(200, 75))),
+                        minimumSize: MaterialStateProperty.all(const Size(200, 75))),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -71,12 +71,12 @@ class ProductDetailScreen extends StatelessWidget {
                         Text('Add to Cart',
                             style: Theme.of(context)
                                 .copyWith(
-                                    textTheme: TextTheme(
+                                    textTheme: const TextTheme(
                                         headline5: TextStyle(
                                             color: Colors.white, fontSize: 24)))
                                 .textTheme
                                 .headline5),
-                        Icon(
+                        const Icon(
                           Icons.add_shopping_cart,
                           size: 40,
                         ),
@@ -98,7 +98,7 @@ class ProductDetailScreen extends StatelessWidget {
                           content: Text('Added ${product.title} to cart',
                               style: Theme.of(context)
                                   .copyWith(
-                                    textTheme: TextTheme(
+                                    textTheme: const TextTheme(
                                       headline6: TextStyle(
                                           color: Colors.white, fontSize: 20),
                                     ),
@@ -112,7 +112,7 @@ class ProductDetailScreen extends StatelessWidget {
                               cart.removeSingleItem(product.id);
                             },
                           ),
-                          duration: Duration(seconds: 3),
+                          duration: const Duration(seconds: 3),
                         ),
                       );
                     },
@@ -141,7 +141,7 @@ class ProductDetailScreen extends StatelessWidget {
         child: Consumer<ShoppingCart>(
           builder: (ctx, cart, ch) =>
               Badge(value: cart.itemCount.toString(), child: ch!),
-          child: Icon(Icons.shopping_cart, size: 36),
+          child: const Icon(Icons.shopping_cart, size: 36),
         ),
       ),
     );
